@@ -1,0 +1,14 @@
+{
+  "name" : "Smoker",
+  "description" : "Checks Social History in the CCDA to determine if the patient is a smoker.",
+  "author" : "Ron Sweeney, Integration Required, LLC <ron.sweeney@integrationrequired.com",
+  "id" : "smoker@apps.smartplatforms.org",
+  "version" : ".1a",
+
+  "mode" : "ui",
+  "scope" : "record",
+
+  "index" :  "http://smart.integrationrequired.com:3000",
+  "oauth_callback": "http://localhost:8000/smartapp/authorize",
+  "icon" :  "http://smart.integrationrequired.com:3000/smartapp/icon.png"
+}

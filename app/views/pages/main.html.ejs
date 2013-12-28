@@ -1,48 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Smoker - An Example Smart App</title>
     <link rel="stylesheet" href="/stylesheets/screen.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script src="http://sample-apps.smartplatforms.org/framework/smart/scripts/smart-api-client.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome aboard! Visit <a href="http://locomotivejs.org/">locomotivejs.org</a> for details.</p>
-<!-- Indicates a successful or positive action -->
-<button type="button" class="btn btn-success">Success</button>
+    <h1>Is <span id="name"></span> a Smoker?</h1>
 
-<script type="text/javascript">
- var globals = require('/usr/local/lib/node_modules/cache');
- var user = new globals.Cache();
- user.open({
- path:"/opt/hsf/mgr",
- username: "root",
- password: "peoplepacs",
- namespace: "USER"
- });
- var customers = new Customers();
- var customer = customers.getCustomer(1);
- console.log("customer number 1 is " + customer.data);
- customers.setCustomer(9, "Tom Smith");
- user.close();
- function Customers() {
- this.global = "Customer";
- this.subscripts = new Array();
- this.getCustomer = function(id) {
- this.subscripts[0] = id;
- var person = user.get(this);
- return person;
- }
- this.setCustomer = function(id, name) {
- this.subscripts[0] = id;
- this.data = name;
- var person = user.set(this);
- return;
- }
- }
-</script>
+<ul id="med_list"></ul>
+     
+     <script>
+       SMART.ready(function(){
+         document.getElementById('name').innerHTML = SMART.record.full_name;
+         SMART.get_medications().success(function(meds) {
+           var med_names = meds.graph
+             .where("?medication rdf:type sp:Medication")
+             .where("?medication sp:drugName ?drug_name_code")
+             .where("?drug_name_code dcterms:title ?drugname");
+
+           var med_list = document.getElementById('med_list');
+           med_names.each(function(i, single_med) {
+             med_list.innerHTML += "<li> " + single_med.drugname + "</li>";
+           });
+         }).error(function(err) { alert ("An error has occurred"); });
+       });
+     </script>
+
+
 
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
